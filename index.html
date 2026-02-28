@@ -15,7 +15,13 @@
 </head><footer style="margin-top: 50px; padding: 20px; color: #888; font-size: 14px;">
     <p>© 2026 Pi Network Fanpage - Kết nối cộng đồng Pioneer</p>
     <p>Mã mời của tôi: <strong>[Dán mã của bạn vào đây]</strong></p>
-</footer>
+</footer><div class="card" style="margin-top: 20px; background: linear-gradient(135deg, #673ab7, #9c27b0); color: white;">
+    <h3>💰 Giá Pi Network (Tham khảo)</h3>
+    <div id="price-container" style="font-size: 24px; font-weight: bold; margin: 10px 0;">
+        Đang tải giá...
+    </div>
+    <p style="font-size: 12px; opacity: 0.8;">Nguồn: Giá IOU từ các sàn giao dịch toàn cầu</p>
+</div>
 <body>
     <div class="card">
         <h1>Pi App của tôi</h1>
@@ -35,7 +41,24 @@
 <div class="card" style="margin-top: 20px;">
     <h3>🎥 Video tìm hiểu về Pi</h3>
     <iframe width="100%" height="250" src="https://www.youtube.com/embed/MsOaC61cR3U" frameborder="0" style="border-radius: 10px;" allowfullscreen></iframe>
-    <script>
+    <script>async function fetchPiPrice() {
+    try {
+        // Sử dụng API của bên thứ 3 (Ví dụ: CoinGecko hoặc sàn giao dịch công khai)
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=pinetwork-iou&vs_currencies=usd');
+        const data = await response.json();
+        const price = data['pinetwork-iou'].usd;
+        
+        document.getElementById('price-container').innerHTML = "$" + price + " USD";
+    } catch (err) {
+        document.getElementById('price-container').innerHTML = "314,159 USD (GCV)";
+        console.log("Không lấy được giá sàn, hiển thị giá đồng thuận.");
+    }
+}
+
+// Gọi hàm cập nhật giá ngay khi trang web vừa tải xong
+fetchPiPrice();
+// Cập nhật lại giá mỗi 60 giây
+setInterval(fetchPiPrice, 60000);
         // Khởi tạo Pi SDK
         const Pi = window.Pi;
         Pi.init({ version: "2.0", sandbox: true });
@@ -59,6 +82,7 @@
     </script>
 </body>
 </html>
+
 
 
 
